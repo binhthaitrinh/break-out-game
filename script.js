@@ -80,37 +80,113 @@ const ctx = canvas.getContext('2d');
 
 // Animation 1
 
-const circle = {
-  x: 200,
+// const circle = {
+//   x: 200,
+//   y: 200,
+//   size: 30,
+//   dx: 5,
+//   dy: 4
+// };
+
+// function drawCircle() {
+//   ctx.beginPath();
+//   ctx.arc(circle.x, circle.y, circle.size, 0, Math.PI * 2);
+//   ctx.fillStyle = 'blue';
+//   ctx.fill();
+// }
+
+// function update() {
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   drawCircle();
+
+//   circle.x += circle.dx;
+//   circle.y += circle.dy;
+
+//   if (circle.x + circle.size >= canvas.width || circle.x - circle.size <= 0) {
+//     circle.dx = -circle.dx;
+//   }
+
+//   if (circle.y + circle.size >= canvas.height || circle.y - circle.size <= 0) {
+//     circle.dy *= -1;
+//   }
+
+//   requestAnimationFrame(update);
+// }
+
+// update();
+
+// animation 2 - character
+
+const image = document.getElementById('source');
+
+const player = {
+  w: 50,
+  h: 70,
+  x: 20,
   y: 200,
-  size: 30,
-  dx: 5,
-  dy: 4
+  speed: 5,
+  dx: 0,
+  dy: 0
 };
 
-function drawCircle() {
-  ctx.beginPath();
-  ctx.arc(circle.x, circle.y, circle.size, 0, Math.PI * 2);
-  ctx.fillStyle = 'blue';
-  ctx.fill();
+function drawPlayer() {
+  ctx.drawImage(image, player.x, player.y, player.w, player.h);
+}
+
+function clear() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function newPos() {
+  player.x += player.dx;
+  player.y += player.dy;
+
+  detectWalls();
+}
+
+function detectWalls() {
+  if (player.x < 0) {
+    player.x = 0;
+  }
+
+  if (player.x + player.w > canvas.width) {
+    player.x = canvas.width - player.w;
+  }
 }
 
 function update() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawCircle();
+  clear();
+  drawPlayer();
 
-  circle.x += circle.dx;
-  circle.y += circle.dy;
-
-  if (circle.x + circle.size >= canvas.width || circle.x - circle.size <= 0) {
-    circle.dx = -circle.dx;
-  }
-
-  if (circle.y + circle.size >= canvas.height || circle.y - circle.size <= 0) {
-    circle.dy *= -1;
-  }
+  newPos();
 
   requestAnimationFrame(update);
 }
 
 update();
+
+function moveRight() {
+  player.dx = player.speed;
+}
+
+function moveLeft() {
+  player.dx = -player.speed;
+}
+
+function keyDown(e) {
+  if (e.key === 'ArrowRight' || e.key === 'Right') {
+    moveRight();
+  } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+    moveLeft();
+  }
+}
+
+function keyUp(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    player.dx = 0;
+    player.dy = 0;
+  }
+}
+
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
