@@ -1,5 +1,5 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+// const canvas = document.getElementById('canvas');
+// const ctx = canvas.getContext('2d');
 
 // canvas.width = 600;
 
@@ -117,76 +117,89 @@ const ctx = canvas.getContext('2d');
 
 // animation 2 - character
 
-const image = document.getElementById('source');
+// const image = document.getElementById('source');
 
-const player = {
-  w: 50,
-  h: 70,
-  x: 20,
-  y: 200,
-  speed: 5,
-  dx: 0,
-  dy: 0
-};
+// const player = {
+//   w: 50,
+//   h: 70,
+//   x: 20,
+//   y: 200,
+//   speed: 5,
+//   dx: 0,
+//   dy: 0
+// };
 
-function drawPlayer() {
-  ctx.drawImage(image, player.x, player.y, player.w, player.h);
-}
+// function drawPlayer() {
+//   ctx.drawImage(image, player.x, player.y, player.w, player.h);
+// }
 
-function clear() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
+// function clear() {
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+// }
 
-function newPos() {
-  player.x += player.dx;
-  player.y += player.dy;
+// function newPos() {
+//   player.x += player.dx;
+//   player.y += player.dy;
 
-  detectWalls();
-}
+//   detectWalls();
+// }
 
-function detectWalls() {
-  if (player.x < 0) {
-    player.x = 0;
-  }
+// function detectWalls() {
+//   if (player.x < 0) {
+//     player.x = 0;
+//   }
 
-  if (player.x + player.w > canvas.width) {
-    player.x = canvas.width - player.w;
-  }
-}
+//   if (player.x + player.w > canvas.width) {
+//     player.x = canvas.width - player.w;
+//   }
+// }
 
-function update() {
-  clear();
-  drawPlayer();
+// function update() {
+//   clear();
+//   drawPlayer();
 
-  newPos();
+//   newPos();
 
-  requestAnimationFrame(update);
-}
+//   requestAnimationFrame(update);
+// }
 
-update();
+// update();
 
-function moveRight() {
-  player.dx = player.speed;
-}
+// function moveRight() {
+//   player.dx = player.speed;
+// }
 
-function moveLeft() {
-  player.dx = -player.speed;
-}
+// function moveLeft() {
+//   player.dx = -player.speed;
+// }
 
-function keyDown(e) {
-  if (e.key === 'ArrowRight' || e.key === 'Right') {
-    moveRight();
-  } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
-    moveLeft();
-  }
-}
+// function keyDown(e) {
+//   if (e.key === 'ArrowRight' || e.key === 'Right') {
+//     moveRight();
+//   } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+//     moveLeft();
+//   }
+// }
 
-function keyUp(e) {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-    player.dx = 0;
-    player.dy = 0;
-  }
-}
+// function keyUp(e) {
+//   if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+//     player.dx = 0;
+//     player.dy = 0;
+//   }
+// }
 
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
+// document.addEventListener('keydown', keyDown);
+// document.addEventListener('keyup', keyUp);
+
+const rulesBtn = document.getElementById('rules-btn');
+const closeBtn = document.getElementById('close-btn');
+const rules = document.getElementById('rules');
+
+// Rules and close event handleers
+rulesBtn.addEventListener('click', () => {
+  rules.classList.add('show');
+});
+
+closeBtn.addEventListener('click', () => {
+  rules.classList.remove('show');
+});
