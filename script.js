@@ -287,10 +287,99 @@ function drawBricks() {
 
 // Draw everything
 function draw() {
+  // clear canvas
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall();
   drawPaddle();
   drawScore();
   drawBricks();
 }
 
-draw();
+// Move paddle on canvas
+function movePaddle() {
+  paddle.x += paddle.dx;
+
+  // wall detection
+  if (paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
+  }
+
+  if (paddle.x < 0) {
+    paddle.x = 0;
+  }
+}
+
+// Move ball on canvas
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Wall collition detection (x)
+  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    ball.dx *= -1;
+  }
+
+  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    ball.dy *= -1;
+  }
+
+  // paddle collision
+  if (
+    ball.x - ball.size > paddle.x &&
+    ball.x + ball.size < paddle.x + paddle.width &&
+    ball.y + ball.size > paddle.y
+  ) {
+    ball.dy = -ball.speed;
+  }
+
+  // bricks collition
+  bricks.forEach(column => {
+    column.forEach(brick => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x &&
+          ball.x + ball.size < brick.x + brick.w &&
+          ball.y + ball.size > brick.y &&
+          ball.y - ball.size < brick.y + brick.h
+        ) {
+          ball.dy *= -1;
+          brick.visible = false;
+        }
+      }
+    });
+  });
+}
+
+// update canvas drawing and animation
+function update() {
+  movePaddle();
+
+  moveBall();
+  draw();
+
+  requestAnimationFrame(update);
+}
+
+update();
+
+// keydown event function
+function keyDown(e) {
+  if (e.key === 'Right' || e.key === 'ArrowRight') {
+    paddle.dx = paddle.speed;
+  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    paddle.dx = -paddle.speed;
+  }
+}
+
+function keyUp(e) {
+  if (e.key === 'Right' || e.key === 'ArrowRight') {
+    paddle.dx = 0;
+  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    paddle.dx = 0;
+  }
+}
+
+// keyboard listener
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
